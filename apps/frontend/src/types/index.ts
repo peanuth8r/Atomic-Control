@@ -1,0 +1,265 @@
+export type Profile = {
+  id: string;
+  actor_id: string;
+  profile_key: string;
+  display_name: string;
+  account: string;
+  expected_sid: string;
+  privilege: 'standard' | 'elevated';
+  logon_type: string;
+  enabled: boolean;
+  healthy: boolean;
+};
+export type Actor = {
+  delivery_mode?: 'checkout' | 'on_demand';
+  artifact_protocol?: number;
+  workspace_status?: string;
+  catalog?: {
+    protocol: number;
+    health: string;
+    status: string;
+    desired_revision: string;
+    observed_revision: string;
+    generation: number;
+    error: string;
+    updated_at: number | null;
+  };
+  retired_at?: number | null;
+  retired_by?: string | null;
+  retirement_reason?: string | null;
+  profile_sync?: {
+    supported: boolean;
+    protocol: number;
+    status: string;
+    generation: number;
+    updated_at: number | null;
+    error: string;
+    results: Record<string, { healthy: boolean; error: string }>;
+  };
+  registration_state: string;
+  id: string;
+  hostname: string;
+  os: string;
+  os_version: string;
+  online: boolean;
+  enabled: boolean;
+  agent_version: string;
+  last_heartbeat: number;
+  revision: string;
+  health: string;
+  active_job: string | null;
+  profiles: Profile[];
+};
+export type Definition = {
+  description: string;
+  technique_name: string;
+  supported_platforms: string[];
+  executor: {
+    name: string;
+    command?: string;
+    steps?: string;
+    cleanup_command?: string;
+    elevation_required?: boolean;
+  };
+  dependencies?: unknown[];
+  input_arguments: Record<string, { default: unknown; description?: string }>;
+};
+export type TestArtifact = {
+  protocol: number;
+  digest: string;
+  size: number;
+  manifest_hash: string;
+  signature: string;
+  manifest: { files: { path: string; size: number; sha256: string }[] };
+};
+export type AtomicTest = {
+  file_plan?: {
+    hash: string;
+    manifest: TestArtifact['manifest'];
+    packaging_version: number;
+  } | null;
+  artifact?: TestArtifact | null;
+  artifact_approved?: boolean;
+  catalog_source: string;
+  source_path: string;
+  active: boolean;
+  execution_ready: boolean;
+  guid: string;
+  name: string;
+  technique: string;
+  revision: string;
+  content_sha256: string;
+  definition: Definition;
+  approved: boolean;
+  risk_level: string;
+  allowed_profiles: string[];
+};
+export type Snapshot = {
+  file_plan?: { hash: string; packaging_version: number };
+  artifact?: TestArtifact;
+  test_name: string;
+  technique: string;
+  atomic_guid: string;
+  hostname: string;
+  account: string;
+  expected_sid: string;
+  privilege: string;
+  action: string;
+  source_revision: string;
+  content_sha256: string;
+  risk_level: string;
+  definition: Definition;
+  timeout_seconds: number;
+  profile_key: string;
+};
+export type Run = {
+  preparation?: {
+    status: string;
+    attempts: number;
+    retry_at: number;
+    error: string;
+    code: string;
+    stalled?: boolean;
+  };
+  execution_artifact?: TestArtifact | null;
+  workspace_status?: string;
+  batch_id?: string | null;
+  queue_position?: number;
+  authorization_source?: 'catalog' | 'per_run' | null;
+  run_id: string;
+  status: string;
+  actor_id: string;
+  execution_profile_id: string;
+  snapshot: Snapshot;
+  result: null | {
+    identity?: {
+      actual_account_name: string;
+      actual_account_sid: string;
+      platform?: 'windows' | 'linux';
+      integrity_level?: string;
+      uid?: number;
+      euid?: number;
+      gid?: number;
+      egid?: number;
+      no_new_privileges?: boolean;
+      capabilities?: string;
+      elevated: boolean;
+      process_id: number;
+    };
+    identity_verified: boolean;
+    stdout: string;
+    stderr: string;
+    started_at: number;
+    finished_at: number;
+    exit_code: number;
+  };
+  created_at: number;
+  updated_at: number;
+  requested_by: string;
+  approved_by: string | null;
+  reason: string;
+  action: string;
+  parent_id: string | null;
+  cancel_requested: boolean;
+  cleanup_status: string;
+  events: { status: string; identity: string; timestamp: number }[];
+};
+export type Page<T> = { items: T[]; total: number; limit: number; offset: number };
+export type User = {
+  session_expires_at?: number | null;
+  session_expires_in?: number | null;
+  subject: string;
+  username?: string | null;
+  roles: string[];
+  mode: string;
+  dev_auth: boolean;
+  approval_mode?: 'catalog' | 'per_run';
+};
+export type Audit = {
+  id: string;
+  action: string;
+  identity: string;
+  resource: string;
+  timestamp: number;
+  details: Record<string, unknown>;
+};
+
+export type CatalogImport = {
+  id: string;
+  source: 'github' | 'upload';
+  ref: string;
+  revision: string;
+  status: 'fetching' | 'ready' | 'imported' | 'failed';
+  created_by: string;
+  created_at: number;
+  updated_at: number;
+  applied_by: string | null;
+  error: string | null;
+  test_count: number;
+  file_count: number;
+  pinned: boolean;
+};
+export type CatalogChange = {
+  guid: string;
+  name: string;
+  technique: string;
+  kind: string;
+  path: string;
+  before: Definition | null;
+  after: Definition | null;
+  previously_approved: boolean;
+};
+export type CatalogPreview = CatalogImport & {
+  counts: Record<string, number>;
+  changes: CatalogChange[];
+  preview_token: string;
+  total: number;
+  limit: number;
+  offset: number;
+};
+
+export type QueuePreview = {
+  preview_hash: string;
+  selected_count: number;
+  eligible_count: number;
+  items: {
+    guid: string;
+    name: string;
+    technique: string;
+    eligible: boolean;
+    risk_level: string;
+    preparation_error?: string;
+    error: string;
+    message: string;
+  }[];
+};
+export type RunBatch = {
+  id: string;
+  actor_id: string;
+  hostname: string;
+  execution_profile_id: string;
+  name: string;
+  reason: string;
+  requested_by: string;
+  approval_mode: 'catalog' | 'per_run';
+  failure_policy: 'pause' | 'continue';
+  paused: boolean;
+  pause_reason: string;
+  cancelled: boolean;
+  status: string;
+  created_at: number;
+  expires_at: number;
+  total: number;
+  finished: number;
+  counts: Record<string, number>;
+  items: {
+    run_id: string;
+    guid: string;
+    name: string;
+    technique: string;
+    status: string;
+    queue_position: number;
+    risk_level: string;
+    preparation_error?: string;
+  }[];
+};

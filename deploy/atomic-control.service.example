@@ -1,0 +1,23 @@
+[Unit]
+Description=Atomic Control API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=atomic-control
+Group=atomic-control
+WorkingDirectory=/opt/atomic-control
+EnvironmentFile=/etc/atomic-control/api.env
+ExecStart=/opt/atomic-control/.venv/bin/uvicorn apps.api.app.main:app --host 127.0.0.1 --port 8000 --workers 1 --no-access-log
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/atomic-control
+
+[Install]
+WantedBy=multi-user.target

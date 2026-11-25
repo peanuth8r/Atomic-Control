@@ -1,0 +1,9 @@
+# Reference values; runtime reads ATOMIC_* environment variables, not this file.
+mode: real
+dev_auth: false
+database_url: sqlite:///./atomic-control.db
+heartbeat_threshold: 90
+lease_seconds: 60
+approval_seconds: 1800
+credential_seconds: 86400
+log_limit: 65536

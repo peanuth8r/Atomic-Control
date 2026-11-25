@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1900" viewBox="0 0 1240 1900" role="img" aria-labelledby="title desc">
+<title id="title">Atomic Control: SSO and agent token flow</title>
+<desc id="desc">People sign in through Keycloak. Agents enroll once, use independent rotating actor credentials, and receive signed job JWTs for approved executions.</desc>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#152336} .small{font-size:18px} .label{font-size:21px} .head{font-size:22px;font-weight:600} .phase{font-size:23px;font-weight:600}</style>
+<defs>
+<marker id="sso" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2563eb" /></marker>
+<marker id="enroll" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7c3aed" /></marker>
+<marker id="job" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#087f6d" /></marker>
+<marker id="muted" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#566579" /></marker>
+</defs>
+<rect width="1240" height="1810" fill="#fff" />
+<text x="38" y="49" font-size="32" font-weight="600">Atomic Control: SSO and agent tokens</text>
+<text x="38" y="82" class="small" style="fill:#566579">Human sign-in, machine identity, and execution authorization are separate.</text>
+<line x1="130" y1="175" x2="130" y2="1740" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 7" />
+<rect x="30.0" y="110" width="200" height="70" rx="10" fill="#f3f6fa" stroke="#cbd5e1" />
+<text x="130" y="138" text-anchor="middle" class="head">Your browser</text>
+<text x="130" y="164" text-anchor="middle" class="small" style="fill:#566579">Administrator / operator</text>
+<line x1="400" y1="175" x2="400" y2="1740" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 7" />
+<rect x="295.0" y="110" width="210" height="70" rx="10" fill="#f3f6fa" stroke="#cbd5e1" />
+<text x="400" y="138" text-anchor="middle" class="head">Keycloak</text>
+<text x="400" y="164" text-anchor="middle" class="small" style="fill:#566579">Identity provider</text>
+<line x1="700" y1="175" x2="700" y2="1740" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 7" />
+<rect x="575.0" y="110" width="250" height="70" rx="10" fill="#f3f6fa" stroke="#cbd5e1" />
+<text x="700" y="138" text-anchor="middle" class="head">Atomic Control</text>
+<text x="700" y="164" text-anchor="middle" class="small" style="fill:#566579">API + job queue</text>
+<line x1="1100" y1="175" x2="1100" y2="1740" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 7" />
+<rect x="980.0" y="110" width="240" height="70" rx="10" fill="#f3f6fa" stroke="#cbd5e1" />
+<text x="1100" y="138" text-anchor="middle" class="head">Installed agent</text>
+<text x="1100" y="164" text-anchor="middle" class="small" style="fill:#566579">Linux / Windows host</text>
+<rect x="25" y="205" width="1190" height="42" rx="6" fill="#f1f5f9" />
+<rect x="25" y="205" width="5" height="42" fill="#2563eb" />
+<text x="43" y="234" class="phase">1  Human SSO</text>
+<line x1="130" y1="285" x2="400" y2="285" stroke="#2563eb" stroke-width="2.5" marker-end="url(#sso)" />
+<rect x="216.9" y="255.0" width="96.2" height="23.0" rx="4" fill="white" />
+<text x="265.0" y="273.0" text-anchor="middle" class="label">Sign in</text>
+<line x1="400" y1="345" x2="130" y2="345" stroke="#2563eb" stroke-width="2.5" marker-end="url(#sso)" stroke-dasharray="8 5" />
+<rect x="158.60000000000002" y="315.0" width="212.79999999999998" height="23.0" rx="4" fill="white" />
+<text x="265.0" y="333.0" text-anchor="middle" class="label">Authorization code</text>
+<line x1="130" y1="410" x2="700" y2="410" stroke="#2563eb" stroke-width="2.5" marker-end="url(#sso)" />
+<rect x="287.4" y="380.0" width="255.2" height="23.0" rx="4" fill="white" />
+<text x="415.0" y="398.0" text-anchor="middle" class="label">Callback: code + state</text>
+<line x1="700" y1="490" x2="400" y2="490" stroke="#2563eb" stroke-width="2.5" marker-end="url(#sso)" />
+<rect x="422.4" y="434.0" width="255.2" height="49.0" rx="4" fill="white" />
+<text x="550.0" y="452.0" text-anchor="middle" class="label">Code + PKCE verifier</text>
+<text x="550.0" y="478.0" text-anchor="middle" class="label">+ server client secret</text>
+<line x1="400" y1="555" x2="700" y2="555" stroke="#2563eb" stroke-width="2.5" marker-end="url(#sso)" stroke-dasharray="8 5" />
+<rect x="406.5" y="525.0" width="287.0" height="23.0" rx="4" fill="white" />
+<text x="550.0" y="543.0" text-anchor="middle" class="label">ID token + API access JWT</text>
+<rect x="517.5" y="574" width="365" height="72" rx="7" fill="#f3f6fa" stroke="#d9e1eb" />
+<text x="700" y="600" text-anchor="middle" class="small">Validate Keycloak JWTs / JWKS</text>
+<text x="700" y="625" text-anchor="middle" class="small">Keep access token server-side</text>
+<line x1="700" y1="690" x2="130" y2="690" stroke="#2563eb" stroke-width="2.5" marker-end="url(#sso)" stroke-dasharray="8 5" />
+<rect x="245.0" y="660.0" width="340.0" height="23.0" rx="4" fill="white" />
+<text x="415.0" y="678.0" text-anchor="middle" class="label">Secure HttpOnly session cookie</text>
+<rect x="25" y="725" width="1190" height="42" rx="6" fill="#f1f5f9" />
+<rect x="25" y="725" width="5" height="42" fill="#7c3aed" />
+<text x="43" y="754" class="phase">2  Agent enrollment — once per host</text>
+<line x1="130" y1="803" x2="700" y2="803" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#enroll)" />
+<rect x="250.3" y="773.0" width="329.4" height="23.0" rx="4" fill="white" />
+<text x="415.0" y="791.0" text-anchor="middle" class="label">Admin generates agent package</text>
+<line x1="700" y1="870" x2="130" y2="870" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#enroll)" stroke-dasharray="8 5" />
+<rect x="260.9" y="814.0" width="308.2" height="49.0" rx="4" fill="white" />
+<text x="415.0" y="832.0" text-anchor="middle" class="label">Single-use enrollment token</text>
+<text x="415.0" y="858.0" text-anchor="middle" class="label">Default: 60 minutes</text>
+<line x1="130" y1="930" x2="1100" y2="930" stroke="#566579" stroke-width="2.5" marker-end="url(#muted)" stroke-dasharray="8 5" />
+<rect x="407.9" y="900.0" width="414.2" height="23.0" rx="4" fill="white" />
+<text x="615.0" y="918.0" text-anchor="middle" class="label">Copy package to host; install locally</text>
+<line x1="1100" y1="1005" x2="700" y2="1005" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#enroll)" />
+<rect x="767.1" y="949.0" width="265.79999999999995" height="49.0" rx="4" fill="white" />
+<text x="900.0" y="967.0" text-anchor="middle" class="label">HTTPS enrollment: token</text>
+<text x="900.0" y="993.0" text-anchor="middle" class="label">+ hostname / platform</text>
+<line x1="700" y1="1075" x2="1100" y2="1075" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#enroll)" stroke-dasharray="8 5" />
+<rect x="698.2" y="1019.0" width="403.59999999999997" height="49.0" rx="4" fill="white" />
+<text x="900.0" y="1037.0" text-anchor="middle" class="label">Opaque actor credential</text>
+<text x="900.0" y="1063.0" text-anchor="middle" class="label">24-hour lifetime; automatic rotation</text>
+<rect x="982.5" y="1092" width="235" height="72" rx="7" fill="#f3f6fa" stroke="#d9e1eb" />
+<text x="1100" y="1118" text-anchor="middle" class="small">Protected host storage</text>
+<text x="1100" y="1143" text-anchor="middle" class="small">No user SSO tokens</text>
+<rect x="25" y="1180" width="1190" height="42" rx="6" fill="#f1f5f9" />
+<rect x="25" y="1180" width="5" height="42" fill="#087f6d" />
+<text x="43" y="1209" class="phase">3  Catalog-authorized execution</text>
+<line x1="130" y1="1295" x2="700" y2="1295" stroke="#087f6d" stroke-width="2.5" marker-end="url(#job)" />
+<rect x="276.8" y="1239.0" width="276.4" height="49.0" rx="4" fill="white" />
+<text x="415.0" y="1257.0" text-anchor="middle" class="label">Run approved test</text>
+<text x="415.0" y="1283.0" text-anchor="middle" class="label">+ browser session cookie</text>
+<rect x="505.0" y="1310" width="390" height="72" rx="7" fill="#f3f6fa" stroke="#d9e1eb" />
+<text x="700" y="1336" text-anchor="middle" class="small">Check operator role + catalog approval</text>
+<text x="700" y="1361" text-anchor="middle" class="small">Check host, profile and catalog revision</text>
+<line x1="1100" y1="1450" x2="700" y2="1450" stroke="#087f6d" stroke-width="2.5" marker-end="url(#job)" />
+<rect x="783.0" y="1394.0" width="234.0" height="49.0" rx="4" fill="white" />
+<text x="900.0" y="1412.0" text-anchor="middle" class="label">Poll jobs with actor</text>
+<text x="900.0" y="1438.0" text-anchor="middle" class="label">bearer credential</text>
+<line x1="700" y1="1530" x2="1100" y2="1530" stroke="#087f6d" stroke-width="2.5" marker-end="url(#job)" stroke-dasharray="8 5" />
+<rect x="677.0" y="1474.0" width="446.0" height="49.0" rx="4" fill="white" />
+<text x="900.0" y="1492.0" text-anchor="middle" class="label">Short-lived RS256 job JWT</text>
+<text x="900.0" y="1518.0" text-anchor="middle" class="label">Bound to this actor / attempt / snapshot</text>
+<rect x="977.5" y="1550" width="245" height="97" rx="7" fill="#f3f6fa" stroke="#d9e1eb" />
+<text x="1100" y="1576" text-anchor="middle" class="small">Verify job signature,</text>
+<text x="1100" y="1601" text-anchor="middle" class="small">catalog hash and UID/SID</text>
+<text x="1100" y="1626" text-anchor="middle" class="small">Run as selected identity</text>
+<line x1="1100" y1="1730" x2="700" y2="1730" stroke="#087f6d" stroke-width="2.5" marker-end="url(#job)" />
+<rect x="730.0" y="1674.0" width="340.0" height="49.0" rx="4" fill="white" />
+<text x="900.0" y="1692.0" text-anchor="middle" class="label">Results + actor credential</text>
+<text x="900.0" y="1718.0" text-anchor="middle" class="label">+ attempt ID and fencing proof</text>
+<line x1="35" y1="1775" x2="1205" y2="1775" stroke="#cbd5e1" />
+<text x="38" y="1809" class="small"><tspan font-weight="600">HTTPS CA certificate:</tspan> validates the API / Keycloak server connection.</text>
+<text x="38" y="1839" class="small"><tspan font-weight="600">Pinned job-signing public key:</tspan> validates the job JWT; the private key stays on the control plane.</text>
+<text x="38" y="1869" class="small" style="fill:#566579">Signing out ends the browser session. Enrolled agents continue using their independent credentials.</text>
+</svg>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atomic Control"
+  short_description: "Start the dashboard and use Atomic Control MCP"
+  default_prompt: "Use $atomic-control to start the dashboard and list approved tests."

@@ -1,0 +1,38 @@
+{
+  "api_url": "https://control.example.invalid",
+  "actor_id": "00000000-0000-4000-8000-000000000001",
+  "hostname": "WIN-TEST-01",
+  "os_version": "Windows 11",
+  "state_root": "C:\\ProgramData\\AtomicControl\\jobs",
+  "credential_file": "C:\\ProgramData\\AtomicControl\\secrets\\credential.dpapi",
+  "public_key_file": "C:\\Program Files\\AtomicControl\\job-signing-public.pem",
+  "catalog_root": "C:\\Program Files\\AtomicControl\\atomic-red-team",
+  "revision": "REPLACE_WITH_REVIEWED_GIT_COMMIT",
+  "powershell_path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "invoke_module_path": "C:\\Program Files\\AtomicControl\\Invoke-AtomicRedTeam\\Invoke-AtomicRedTeam.psd1",
+  "invoke_module_sha256": "REPLACE_WITH_REVIEWED_MODULE_SHA256",
+  "poll_seconds": 5,
+  "profiles": [
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "profile_key": "standard-user",
+      "account": ".\\atomic-user",
+      "expected_sid": "S-1-5-21-111-222-333-1001",
+      "privilege": "standard",
+      "logon_type": "batch",
+      "enabled": true,
+      "validated": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "profile_key": "local-admin",
+      "account": ".\\atomic-admin",
+      "expected_sid": "S-1-5-21-111-222-333-1002",
+      "privilege": "elevated",
+      "logon_type": "batch",
+      "enabled": true,
+      "validated": false
+    }
+  ],
+  "heartbeat_seconds": 30
+}

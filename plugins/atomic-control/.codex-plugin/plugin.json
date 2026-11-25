@@ -1,0 +1,38 @@
+{
+  "name": "atomic-control",
+  "version": "0.2.2",
+  "description": "Connect to the authenticated Atomic Control dashboard and MCP for approved host validation.",
+  "author": {
+    "name": "Atomic Control",
+    "url": "https://github.com/peanuth8r/Atomic-Control"
+  },
+  "repository": "https://github.com/peanuth8r/Atomic-Control",
+  "keywords": [
+    "atomic-red-team",
+    "security-validation",
+    "dashboard",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Atomic Control",
+    "shortDescription": "Dashboard and approved security validation",
+    "longDescription": "Use the real HTTPS control plane and caller-authenticated MCP tools to discover approved tests, request authorized execution and inspect evidence. Catalog and optional per-run approvals stay in the dashboard.",
+    "developerName": "Atomic Control",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/peanuth8r/Atomic-Control",
+    "defaultPrompt": [
+      "Start the Atomic Control dashboard.",
+      "List approved tests and available actors.",
+      "Request an Atomic test for human approval and inspect its status."
+    ],
+    "brandColor": "#75E5C5",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg"
+  }
+}

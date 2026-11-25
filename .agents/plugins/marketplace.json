@@ -1,0 +1,20 @@
+{
+  "name": "atomic-control-local",
+  "interface": {
+    "displayName": "Atomic Control"
+  },
+  "plugins": [
+    {
+      "name": "atomic-control",
+      "source": {
+        "source": "local",
+        "path": "./plugins/atomic-control"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

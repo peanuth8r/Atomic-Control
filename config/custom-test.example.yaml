@@ -1,0 +1,14 @@
+# Benign custom authoring example; not an official Red Canary Atomic definition.
+attack_technique: T1082
+display_name: System Information Discovery
+atomic_tests:
+  - name: Custom validation message
+    auto_generated_guid: 22222222-2222-4222-8222-222222222222
+    description: Emits a fixed message for validating the authoring workflow.
+    supported_platforms:
+      - windows
+    executor:
+      name: powershell
+      elevation_required: false
+      command: Write-Output 'Atomic Control custom validation'
+      cleanup_command: Write-Output 'No artifacts created'

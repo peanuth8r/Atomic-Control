@@ -1,0 +1,64 @@
+name: atomic-control-identity
+services:
+  postgres:
+    image: postgres:17@sha256:846a7ddaa67a4b354ae1d21087b683901aa6113a4ed626d3787cfbf6c85e3e07
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD:?Generate the local identity environment first}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U keycloak -d keycloak]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    mem_limit: 512m
+    restart: unless-stopped
+    logging:
+      options: {max-size: 10m, max-file: '3'}
+  tls-init:
+    image: quay.io/keycloak/keycloak:26.8.2@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0
+    user: '0:0'
+    entrypoint: [/bin/bash, -ec]
+    command:
+      - >-
+        cp /input/keycloak.pem /output/keycloak.pem;
+        cp /input/keycloak-key.pem /output/keycloak-key.pem;
+        chown 1000:0 /output /output/keycloak.pem /output/keycloak-key.pem;
+        chmod 750 /output;
+        chmod 640 /output/keycloak.pem /output/keycloak-key.pem
+    volumes:
+      - ${KEYCLOAK_RUNTIME:?Generate the local identity environment first}/tls:/input:ro
+      - keycloak-tls:/output
+    restart: 'no'
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.2@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0
+    command: [start]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: atomic-bootstrap
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_BOOTSTRAP_PASSWORD:?Generate the local identity environment first}
+      KC_HOSTNAME: ${KEYCLOAK_PUBLIC_URL:-https://localhost:18443}
+      KC_HTTP_ENABLED: 'false'
+      KC_HTTPS_CERTIFICATE_FILE: /run/atomic-tls/keycloak.pem
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /run/atomic-tls/keycloak-key.pem
+      KC_HEALTH_ENABLED: 'true'
+      KC_LOG_LEVEL: INFO
+    ports:
+      - 127.0.0.1:18443:8443
+    volumes:
+      - keycloak-tls:/run/atomic-tls:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+      tls-init: {condition: service_completed_successfully}
+    mem_limit: 2g
+    restart: unless-stopped
+    logging:
+      options: {max-size: 10m, max-file: '3'}
+volumes:
+  postgres-data:
+  keycloak-tls:

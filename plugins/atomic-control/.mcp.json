@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "atomic_control_dashboard": {
+      "command": "python3",
+      "args": [
+        "./scripts/launch.py"
+      ],
+      "cwd": ".",
+      "startup_timeout_sec": 20,
+      "tool_timeout_sec": 60
+    },
+    "atomic_control": {
+      "type": "http",
+      "url": "https://localhost:19444/mcp",
+      "oauth": {
+        "clientId": "atomic-control-codex",
+        "callbackUrl": "http://127.0.0.1:1456/callback",
+        "callbackPort": 1456
+      }
+    }
+  }
+}

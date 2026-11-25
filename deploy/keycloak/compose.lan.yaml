@@ -1,0 +1,4 @@
+services:
+  keycloak:
+    ports:
+      - ${KEYCLOAK_LAN_ADDRESS:?Configure the private LAN address first}:18443:8443

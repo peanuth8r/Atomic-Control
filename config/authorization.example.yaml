@@ -1,0 +1,14 @@
+# No wildcard grants. All IDs must be explicitly provisioned and reviewed.
+subjects:
+  operator-oidc-subject:
+    - actions: [execute, check, cleanup]
+      actors: [REPLACE_ACTOR_UUID]
+      profiles: [REPLACE_PROFILE_UUID]
+      tests: [REPLACE_ATOMIC_GUID]
+      risks: [low]
+  approver-oidc-subject:
+    - actions: [approve]
+      actors: [REPLACE_ACTOR_UUID]
+      profiles: [REPLACE_PROFILE_UUID]
+      tests: [REPLACE_ATOMIC_GUID]
+      risks: [low]

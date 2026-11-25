@@ -1,0 +1,36 @@
+name: MVP validation
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    # Match the operating systems supported by the pinned Playwright 1.56.1.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '10.24.0'
+      - run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+      - run: ruff check apps scripts tests && ruff format --check apps scripts tests && mypy apps scripts && pytest -q
+      - run: python -m tests.support.check_migrations
+      - run: pnpm install --frozen-lockfile && pnpm build && pnpm test
+        working-directory: apps/frontend
+      - run: python -m scripts.check_codex_plugin
+      - run: pnpm exec playwright install --with-deps chromium
+        working-directory: apps/frontend
+      - run: |
+          python -m tests.support.browser_stack > /tmp/atomic-browser-tests.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" || true' EXIT
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:15173/ >/dev/null && break || sleep 1; done
+          ATOMIC_DASHBOARD_TEST_URL=http://127.0.0.1:15173 ATOMIC_CHROME_PATH="$(find "$HOME/.cache/ms-playwright" -path '*/chrome-linux/chrome' -o -path '*/chrome-linux64/chrome' | head -1)" pnpm --dir apps/frontend e2e

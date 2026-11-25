@@ -1,0 +1,14 @@
+# Reference only; register profiles via administrator API then copy immutable IDs into agent.json.
+execution_profiles:
+  - profile_key: standard-user
+    display_name: Standard User
+    account: '.\atomic-user'
+    expected_sid: S-1-5-21-111-222-333-1001
+    privilege: standard
+    logon_type: batch
+  - profile_key: local-admin
+    display_name: Local Administrator
+    account: '.\atomic-admin'
+    expected_sid: S-1-5-21-111-222-333-1002
+    privilege: elevated
+    logon_type: batch

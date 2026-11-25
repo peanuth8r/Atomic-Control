@@ -1,0 +1,46 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+dist/
+*.db
+*.db-*
+.env
+.env.*
+!.env.example
+.DS_Store
+*.pem
+*.key
+artifacts/
+playwright-report/
+test-results/
+
+.pnpm-store/
+*.tsbuildinfo
+plugins/**/.project.local.json
+
+# Other environment files and databases
+*.env
+*.sqlite
+*.sqlite3
+*.sqlite*-*
+
+# Logs and coverage
+*.log
+.coverage
+.coverage.*
+htmlcov/
+
+# Local deployment configuration
+config/agent.json
+config/authorization.yaml
+config/approved_tests.yaml
+config/execution_profiles.yaml
+
+# Downloaded agent packages and certificate bundles
+AtomicControlAgent*.zip
+AtomicControlAgent*/
+*.p12
+*.pfx

@@ -1,0 +1,14 @@
+attack_technique: T1082
+display_name: System Information Discovery
+atomic_tests:
+  - name: Fixture system information discovery
+    auto_generated_guid: 11111111-1111-4111-8111-111111111111
+    description: Synthetic definition for isolated automated tests only. This is not an imported Red Canary Atomic definition.
+    supported_platforms: [windows]
+    executor:
+      name: powershell
+      elevation_required: false
+      command: Write-Output 'TEST FIXTURE — system information discovery'
+      cleanup_command: Write-Output 'TEST FIXTURE — cleanup'
+    input_arguments: {}
+    dependencies: []

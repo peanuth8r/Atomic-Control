@@ -1,0 +1,9 @@
+# Approval is a separate administrator action; catalog import never reads this automatically.
+approved_tests:
+  - guid: 00000000-0000-4000-8000-000000000000
+    allowed_platforms: [windows]
+    allowed_profiles: [standard-user, local-admin]
+    risk_level: low
+    approved: false
+    source_revision: REPLACE_WITH_REVIEWED_GIT_COMMIT
+    content_sha256: REPLACE_WITH_REVIEWED_DEFINITION_SHA256

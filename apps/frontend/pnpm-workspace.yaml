@@ -1,0 +1,5 @@
+# esbuild's pinned platform-binary verification is the sole allowed dependency build.
+allowBuilds:
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild
